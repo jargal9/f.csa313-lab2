@@ -11,7 +11,7 @@
 
 ```
 k6 v2.2.0 (commit/devel, go1.26.5, darwin/arm64)
-
+x
 ```
 
 ## Алхам 2. Baseline (5 VU, 30s)
