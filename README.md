@@ -11,7 +11,6 @@
 
 ```
 k6 v2.2.0 (commit/devel, go1.26.5, darwin/arm64)
-x
 ```
 
 ## Алхам 2. Baseline (5 VU, 30s)
@@ -39,13 +38,13 @@ x
 * `docs/run_5vu.png`, `results/run-05vu.txt`
 * `docs/run_30vu.png`, `results/run-30vu.txt`
 * `docs/run_100vu.png`, `results/run-100vu.txt`
-* `docs/run_stages.png`,`results/run_stages.txt` — stages ашигласан үр дүн
+* `docs/run_stages.png`,`results/run-stages.txt` — stages ашигласан үр дүн
 
 `stages`-тэй хувилбар (`script-stages.js`, 5→30→100→0) нь ачааллын ерөнхий хандлагыг ажиглах зорилгоор хийгдсэн бөгөөд дээрх хүснэгтийн тоон утгуудыг тусдаа ажиллуулалтын гаралтын файлуудаас авсан.
 
 ## Алхам 4 — Threshold (SLO)
 
-**SLO тооцоо:** baseline p95 (252.91ms) × 1.5 = **379.37ms**. Энэ коэффициентийг сонгосон шалтгаан нь энгийн ачааллаас дунджаар 50%-иар удаан хариу өгөхийг зөвшөөрөх боловч цаашид систем хэт удаашрахаас сэргийлэх зорилготой.
+**SLO тооцоо:** baseline p95 (252.91ms) × 1.5 = **379.365ms**. Энэ коэффициентийг сонгосон шалтгаан нь энгийн ачааллаас дунджаар 50%-иар удаан хариу өгөхийг зөвшөөрөх боловч цаашид систем хэт удаашрахаас сэргийлэх зорилготой.
 
 ```javascript
 thresholds: {
@@ -64,14 +63,14 @@ thresholds: {
 
 **Хавсаргасан файл болон зураг:**
 
-* `results/run-threshold-pass.txt`, `docs/threshold_passed.png`
-* `results/run-threshold-fail.txt`, `docs/threshold_failed.png`
+* `results/run-threshold-passed.txt`, `docs/threshold_passed.png`
+* `results/run-threshold-failed.txt`, `docs/threshold_failed.png`
 
 FAIL тестийн үед k6 `ERRO[0062] thresholds on metrics 'http_req_duration' have been crossed` гэсэн алдаа заан non-zero exit code буцаасан бөгөөд энэ нь CI/CD pipeline дээр Quality Gate ажиллаж pipeline-ийг зогсоох зарчимтай нийцэж байна.
 
 ## Алхам 5 — Локал сервер (Express)
 
-`/` (шууд хариу) ба `/slow` (100ms хойшлуулсан хариу) endpoint-уудыг 30 VU, 30s тестлэв.
+`/fast` (шууд хариу) ба `/slow` (100ms хойшлуулсан хариу) endpoint-уудыг 30 VU, 30s тестлэв.
 
 | Endpoint | p90 | p95 | Throughput | Error rate |
 | --- | --- | --- | --- | --- |
@@ -80,11 +79,11 @@ FAIL тестийн үед k6 `ERRO[0062] thresholds on metrics 'http_req_durati
 
 **Хавсаргасан файл болон зураг:**
 
-* `docs/localhost_fast.png`, `results/run-localhost-fast.txt`
-* `docs/localhost_slow.png`, `results/run-localhost-slow.txt`
+* `docs/localhost-fast.png`, `results/run-localhost-fast.txt`
+* `docs/localhost-slow.png`, `results/run-localhost-slow.txt`
 
 ## Дүгнэлт
 
 Хэрэглэгчийн тоо (VU) 5-аас 100 болон өсөхөд p95 latency 249.27ms-ээс 330.34ms болж уртассан ба throughput 7.45 req/s-ээс 141.96 req/s болж өссөн нь ачаалал ихсэхэд систем удааширдгийг харуулж байна. Харин 100 VU үед алдааны хувь (error rate) 0.00% байсан нь системийн тогтвортой байдал хэвийн болохыг илтгэв.
 
-Baseline үзүүлэлт дээр үндэслэн тооцсон p(95) < 379.37ms гэсэн SLO босго нь 30 VU ачаалалтай үед амжилттай (PASS) биелсэн бол санаатайгаар хэт чангаруулсан утга (50ms) дээр k6 алдаа зааж (FAIL), CI/CD автомат тестэд ашиглах Quality Gate-ийн үүргээ амжилттай гүйцэтгэлээ. Мөн локал Express сервер дээрх туршилтаар сааталгүй эндпойнт нь хугацаа хойшлуулсан эндпойнтоос хамаагүй хурдан болохыг баталгаажууллаа.
+Baseline үзүүлэлт дээр үндэслэн тооцсон p(95) < 379.365ms гэсэн SLO босго нь 30 VU ачаалалтай үед амжилттай (PASS) биелсэн бол санаатайгаар хэт чангаруулсан утга (50ms) дээр k6 алдаа зааж (FAIL), CI/CD автомат тестэд ашиглах Quality Gate-ийн үүргээ амжилттай гүйцэтгэлээ. Мөн локал Express сервер дээрх туршилтаар сааталгүй эндпойнт нь хугацаа хойшлуулсан эндпойнтоос хамаагүй хурдан болохыг баталгаажууллаа.
